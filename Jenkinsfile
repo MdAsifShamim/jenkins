@@ -14,10 +14,20 @@ pipeline {
             }
         }
         
+         stage('Code Quality') {
+            steps {
+                withSonarQubeEnv('SonarQube-Server') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
+              
         stage('Packaging Stage') {
             steps {
                 bat  'mvn package'
             }
         }
+        
+        
     }
 }
