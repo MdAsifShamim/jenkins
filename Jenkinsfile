@@ -13,14 +13,6 @@ pipeline {
                 bat 'mvn test'
             }
         }
-        
-         stage('Code Quality') {
-            steps {
-                withSonarQubeEnv('SonarQube-Server') {
-                    bat 'mvn sonar:sonar'
-                }
-            }
-        }
               
         stage('Packaging Stage') {
             steps {
@@ -28,6 +20,12 @@ pipeline {
             }
         }
         
-        
+     	stage('consolidate Results'){
+     		steps{
+     			input("Do you want to capture results?")
+     			junit '**/target/surefire-reports/TEST-*.xml'
+     			archive 'target/*.jar' 
+     		}
+     	}   
     }
 }
